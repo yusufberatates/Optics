@@ -41,34 +41,39 @@ So in a physics sense, this is a practical demonstration of:
 ## Project files
 
 ```text
-Unnamed/
-├── README.md
-├── otofokus_otonom.py        # Main autofocus system
-├── serial_test.py            # Arduino/serial communication tester
-├── vision_test.py            # Camera and sharpness test
-├── Prescription_data.txt     # Lens data / optical reference
-├── LENS.ZDA                  # Lens data file
-├── LENS.zmx                  # Lens design file
-├── Lens.bmp                  # Lens-related bitmap reference
-├── .venv/                    # Project virtual environment
-└── .git/                    # Git metadata
+optics/
+├── arduino/
+│   └── motor_kontrol.ino           # Arduino sketch for serial commands and LED feedback
+├── python/
+│   ├── otofokus_otonom.py          # Main autofocus system
+│   ├── serial_test.py              # Arduino/serial communication tester
+│   └── vision_test.py              # Camera and sharpness test
+├── zemax/
+│   ├── Prescription_data.txt       # Lens data / optical reference
+│   ├── LENS.ZDA                    # Lens data file
+│   ├── LENS.zmx                    # Lens design file
+│   └── Lens.bmp                    # Lens-related bitmap reference
+└── README.md
 ```
 
 ### File descriptions
 
-- [otofokus_otonom.py](./otofokus_otonom.py)  
+- [otofokus_otonom.py](./python/otofokus_otonom.py)
   This is the main system script. It checks the camera, computes the sharpness score, decides the motion direction, and sends commands to the Arduino.
 
-- [vision_test.py](./vision_test.py)  
+- [vision_test.py](./python/vision_test.py)
   A simple camera test script. It displays the live image and prints the image sharpness score so you can see if the camera and focus metric work correctly.
 
-- [serial_test.py](./serial_test.py)  
+- [serial_test.py](./python/serial_test.py)
   A helper script to test the serial connection with an Arduino or controller. It allows manual commands such as forward/backward motion.
 
-- [Prescription_data.txt](./Prescription_data.txt)  
+- [motor_kontrol.ino](./arduino/motor_kontrol.ino)
+  The Arduino sketch. Upload it using Arduino IDE Legacy.
+
+- [Prescription_data.txt](./zemax/Prescription_data.txt)
   Optical and lens design data used as a supporting reference for the system.
 
-- [LENS.ZDA](./LENS.ZDA) and [LENS.zmx](./LENS.zmx)  
+- [LENS.ZDA](./zemax/LENS.ZDA) and [LENS.zmx](./zemax/LENS.zmx)
   Lens design files that help describe the optical hardware behind the project.
 
 ---
@@ -112,6 +117,7 @@ This is a basic hill-climbing method: the system tries to move in the direction 
 - Python 3.9 or newer
 - OpenCV (`opencv-python`)
 - PySerial (`pyserial`)
+- Arduino IDE Legacy (to upload the Arduino sketch)
 
 ### Install dependencies
 
@@ -123,18 +129,22 @@ pip install opencv-python pyserial
 
 ## How to run the project
 
-### 1. Test the camera
+### 1. Upload the Arduino sketch
+
+Open `arduino/motor_kontrol.ino` in Arduino IDE Legacy, select your Arduino board and its port from the **Tools** menu, then click **Upload**. Close the IDE's Serial Monitor before running the Python scripts so they can use the serial port.
+
+### 2. Test the camera
 
 ```bash
-python vision_test.py
+python python/vision_test.py
 ```
 
 This opens the camera and shows the image with a focus score. Press `q` to exit.
 
-### 2. Test the serial connection
+### 3. Test the serial connection
 
 ```bash
-python serial_test.py
+python python/serial_test.py
 ```
 
 This script opens the COM port and lets you send manual commands to the Arduino:
@@ -145,10 +155,10 @@ This script opens the COM port and lets you send manual commands to the Arduino:
 
 You must set the correct port before using it.
 
-### 3. Run the autofocus system
+### 4. Run the autofocus system
 
 ```bash
-python otofokus_otonom.py
+python python/otofokus_otonom.py
 ```
 
 This script does the full operation: it opens the camera, reads frames, calculates sharpness, decides the motion direction, and sends that decision to the Arduino.
@@ -157,13 +167,13 @@ This script does the full operation: it opens the camera, reads frames, calculat
 
 ## Important configuration settings
 
-The code currently uses a hardcoded serial port:
+The Python scripts currently use a hardcoded serial port:
 
 ```python
 arduino_port = 'COM6'
 ```
 
-This must be changed to match the actual port on your system. For example, on some machines it may be a different COM port or a Linux serial device such as `/dev/ttyUSB0`.
+Change this in the Python script you plan to run to match the port selected in Arduino IDE. For example, it may be a different COM port or a Linux serial device such as `/dev/ttyUSB0`.
 
 The camera is also opened as:
 
@@ -238,6 +248,7 @@ This project can be extended in many ways:
 - add thresholding or hysteresis to avoid jitter,
 - log focus values over time,
 - improve the control loop,
+- increase the number of lenses in the optical system,
 - test with different lenses and cameras.
 
 This would make the system more reliable and closer to a real autofocus device.
