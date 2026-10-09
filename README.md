@@ -41,17 +41,20 @@ So in a physics sense, this is a practical demonstration of:
 ## Project files
 
 ```text
-Unnamed/
-├── README.md
-├── otofokus_otonom.py        # Main autofocus system
-├── serial_test.py            # Arduino/serial communication tester
-├── vision_test.py            # Camera and sharpness test
-├── Prescription_data.txt     # Lens data / optical reference
-├── LENS.ZDA                  # Lens data file
-├── LENS.zmx                  # Lens design file
-├── Lens.bmp                  # Lens-related bitmap reference
-├── .venv/                    # Project virtual environment
-└── .git/                    # Git metadata
+otofokus-sistemi/
+├── arduino/
+│   └── motor_kontrol.ino       # Arduino firmware for hardware control / listening
+├── python/
+│   ├── otofokus_otonom.py          # Main autofocus system
+│   ├── serial_test2.py             # Arduino/serial communication tester
+│   └── vision_test.py              # Camera and sharpness test
+├── Zemax/
+│   ├── Prescription_data.txt       # Lens data / optical reference
+│   ├── Prescription_data.txt           # Lens data / optical reference
+│   ├── LENS.ZDA                        # Lens data file
+│   ├── LENS.zmx                        # Lens design file
+│   └── Lens.bmp                        # Lens-related bitmap reference
+└── README.md
 ```
 
 ### File descriptions
@@ -65,6 +68,9 @@ Unnamed/
 - [serial_test.py](./serial_test.py)  
   A helper script to test the serial connection with an Arduino or controller. It allows manual commands such as forward/backward motion.
 
+- [motor_kontrol.ino](./arduino/motor_kontrol/motor_kontrol.ino)  
+  The Arduino firmware script. It listens to the serial port, reads commands from the computer, and controls the actuator/LED feedback accordingly.
+  
 - [Prescription_data.txt](./Prescription_data.txt)  
   Optical and lens design data used as a supporting reference for the system.
 
