@@ -41,7 +41,7 @@ So in a physics sense, this is a practical demonstration of:
 ## Project files
 
 ```text
-otofokus-sistemi/
+optics/
 ├── arduino/
 │   └── motor_kontrol.ino       # Arduino firmware for hardware control / listening
 ├── python/
