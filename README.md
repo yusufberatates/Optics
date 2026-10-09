@@ -48,8 +48,7 @@ optics/
 │   ├── otofokus_otonom.py          # Main autofocus system
 │   ├── serial_test2.py             # Arduino/serial communication tester
 │   └── vision_test.py              # Camera and sharpness test
-├── Zemax/
-│   ├── Prescription_data.txt       # Lens data / optical reference
+├── zemax/
 │   ├── Prescription_data.txt           # Lens data / optical reference
 │   ├── LENS.ZDA                        # Lens data file
 │   ├── LENS.zmx                        # Lens design file
